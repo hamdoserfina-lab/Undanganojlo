@@ -1,517 +1,307 @@
-// Script untuk animasi dan interaksi - UPDATED
-document.addEventListener('DOMContentLoaded', function() {
-    // Elemen utama
+// 1. Inisialisasi AOS
+AOS.init({ duration: 1000, once: true });
+
+// 2. Variabel Global UI
+const cover = document.getElementById("cover");
+const mainContent = document.getElementById("main-content");
+const navbar = document.getElementById("navbar");
+const musicControl = document.getElementById("music-control");
+const audio = document.getElementById("bg-music");
+const musicIcon = document.getElementById("music-icon");
+let isPlaying = false;
+
+// 3. Logika URL Parameter
+function getGuestName() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const guestName = urlParams.get("to");
+    const displayGuest = document.getElementById("guest-name-cover");
+    const inputNama = document.getElementById("nama");
+    if (guestName) {
+        displayGuest.innerText = guestName;
+        inputNama.value = guestName;
+    }
+}
+getGuestName();
+
+// 4. Fungsi Buka Undangan
+function bukaUndangan() {
+    const btn = document.querySelector('.btn-open');
     const cover = document.getElementById('cover');
-    const mainContent = document.getElementById('mainContent');
-    const openBtn = document.getElementById('openBtn');
-    const musicToggle = document.getElementById('musicToggle');
-    const weddingMusic = document.getElementById('weddingMusic');
-    const calendarBtn = document.getElementById('addToCalendar');
+    const canvasExplosion = document.getElementById('explosion-canvas');
     
-    // Inisialisasi musik
-    let isMusicPlaying = false;
+    // Setup Confetti (Ledakan Awal Tetap Solid biar Kelihatan Jelas)
+    const myConfetti = confetti.create(canvasExplosion, { resize: true });
+    const rect = btn.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
+    
+    // Warna Ledakan (Solid)
+    const blastColors = ['#d4af37', '#f3e5ab', '#ffffff'];
 
-    // Inisialisasi countdown
-    initializeCountdown();
+    myConfetti({
+        particleCount: 200, // Jumlah ledakan
+        spread: 100,
+        origin: { x: x, y: y },
+        colors: blastColors,
+        shapes: ['circle'],
+        scalar: 0.8,
+        gravity: 0.8,
+        ticks: 400,
+        disableForReducedMotion: true,
+        zIndex: 20001 
+    });
 
-    // Inisialisasi gallery carousel
-    initializeCarousel();
+    // Musik
+    musicControl.style.opacity = "1";
+    playMusic();
 
-    // Animasi masuk untuk elemen cover
-    gsap.to('.cover-subtitle', {
-        duration: 1,
-        opacity: 1,
-        y: 0,
-        delay: 0.5,
-        ease: 'power2.out'
-    });
-    
-    gsap.to('.cover-title', {
-        duration: 1,
-        opacity: 1,
-        y: 0,
-        delay: 0.8,
-        ease: 'power2.out'
-    });
-    
-    gsap.to('.cover-date', {
-        duration: 1,
-        opacity: 1,
-        y: 0,
-        delay: 1.1,
-        ease: 'power2.out'
-    });
-    
-    gsap.to('.cover-invitation', {
-        duration: 1,
-        opacity: 1,
-        y: 0,
-        delay: 1.4,
-        ease: 'power2.out'
-    });
-    
-    gsap.to('.open-invitation-btn', {
-        duration: 1,
-        opacity: 1,
-        y: 0,
-        delay: 1.7,
-        ease: 'power2.out'
-    });
-    
-    // Event listener untuk tombol buka undangan
-    openBtn.addEventListener('click', function() {
-        // Animasi tombol saat diklik
-        gsap.to(this, {
-            scale: 0.9,
-            duration: 0.2,
-            yoyo: true,
-            repeat: 1,
-            onComplete: function() {
-                // Animasi keluar untuk cover
-                const coverContent = document.querySelector('.cover-content');
-                coverContent.classList.add('cover-content-exit');
-                cover.classList.add('parallax-exit');
-                cover.classList.add('cover-exit');
-                
-                // Tampilkan main content setelah animasi selesai
-                setTimeout(function() {
-                    cover.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    
-                    // Animasi masuk untuk main content
-                    gsap.to(mainContent, {
-                        duration: 1,
-                        opacity: 1,
-                        ease: 'power2.out'
-                    });
-                    
-                    // Animasi untuk hero section
-                    animateHeroSection();
-                    
-                    // Scroll ke atas
-                    window.scrollTo(0, 0);
-                    
-                    // Mulai musik otomatis
-                    playMusic();
-                }, 1500);
-            }
-        });
-    });
-    
-    // Fungsi untuk animasi hero section
-    function animateHeroSection() {
-        console.log('Starting enhanced hero animation...');
+    // Transisi Cover
+    setTimeout(() => {
+        cover.classList.add("hidden");
+        document.body.style.overflow = "auto";
+        mainContent.style.display = "block";
+        navbar.style.display = "flex";
         
-        const heroTimeline = gsap.timeline();
+        setTimeout(() => { AOS.refresh(); }, 500);
         
-        heroTimeline
-            .fromTo('.hero-frame', 
-                {
-                    opacity: 0,
-                    scale: 0.8,
-                    rotation: -5,
-                    y: 50
-                },
-                {
-                    opacity: 1,
-                    scale: 1,
-                    rotation: 0,
-                    y: 0,
-                    duration: 1.2,
-                    ease: 'back.out(1.4)'
-                }
-            )
-            .to('.hero-frame::before', {
-                opacity: 1,
-                duration: 0.8,
-                ease: 'power2.out'
-            }, '-=0.5')
-            .fromTo('.hero-subtitle',
-                {
-                    opacity: 0,
-                    y: 30
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                },
-                '-=0.3'
-            )
-            .to('.hero-subtitle::after', {
-                scaleX: 1,
-                duration: 0.6,
-                ease: 'power2.out'
-            }, '-=0.2')
-            .fromTo('.bride-name',
-                {
-                    opacity: 0,
-                    x: -50,
-                    y: 20
-                },
-                {
-                    opacity: 1,
-                    x: 0,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power3.out'
-                },
-                '-=0.5'
-            )
-            .to('.bride-name::after', {
-                width: '100%',
-                duration: 0.8,
-                ease: 'power2.out'
-            }, '-=0.3')
-            .fromTo('.hero-ampersand',
-                {
-                    opacity: 0,
-                    scale: 0,
-                    rotation: -180
-                },
-                {
-                    opacity: 1,
-                    scale: 1,
-                    rotation: 0,
-                    duration: 0.8,
-                    ease: 'back.out(1.8)'
-                },
-                '-=0.6'
-            )
-            .fromTo('.groom-name',
-                {
-                    opacity: 0,
-                    x: 50,
-                    y: 20
-                },
-                {
-                    opacity: 1,
-                    x: 0,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power3.out'
-                },
-                '-=0.8'
-            )
-            .to('.groom-name::after', {
-                width: '100%',
-                duration: 0.8,
-                ease: 'power2.out'
-            }, '-=0.3')
-            .fromTo('.hero-date',
-                {
-                    opacity: 0,
-                    y: 30
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                },
-                '-=0.5'
-            )
-            .fromTo('.date-decoration',
-                {
-                    opacity: 0,
-                    scaleX: 0
-                },
-                {
-                    opacity: 1,
-                    scaleX: 1,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                },
-                '-=0.3'
-            )
-            .to('.hero-frame', {
-                y: -10,
-                duration: 2,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.inOut'
-            }, '+=0.5');
+        // MULAI HUJAN (Versi Halus)
+        loadUcapan();
+        initParticles(); 
+        
+        // TIMER 15 DETIK: Stop Hujan
+        setTimeout(() => { stopRain(); }, 15000);
 
-        setTimeout(initScrollAnimations, 2000);
-    }
-    
-    // Fungsi inisialisasi scroll animations
-    function initScrollAnimations() {
-        gsap.registerPlugin(ScrollTrigger);
-        
-        gsap.utils.toArray(['.found-love-title', '.verse-container', '.verse-source', 
-                           '.profile', '.countdown-content', '.event-card', '.bank-card']).forEach(element => {
-            gsap.fromTo(element, {
-                opacity: 0,
-                y: 50
-            }, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                ease: 'power2.out',
-                scrollTrigger: {
-                    trigger: element,
-                    start: 'top 80%',
-                    toggleActions: 'play none none none'
-                }
-            });
-        });
+        setTimeout(() => { myConfetti.reset(); }, 4000);
+    }, 800); 
+}
 
-        // Animasi countdown items
-        gsap.fromTo('.countdown-item', {
-            opacity: 0,
-            scale: 0.5,
-            y: 30
-        }, {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 1,
-            stagger: 0.2,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-                trigger: '.countdown-section',
-                start: 'top 80%',
-                toggleActions: 'play none none none'
-            }
-        });
+// 5. Musik Logic
+function playMusic() {
+    audio.play().catch(e => console.log("Autoplay blocked"));
+    isPlaying = true;
+    musicControl.classList.add("spin");
+}
+function toggleMusic() {
+    if (isPlaying) {
+        audio.pause();
+        musicControl.classList.remove("spin");
+        musicIcon.classList.replace("bi-music-note-beamed", "bi-pause-fill");
+    } else {
+        audio.play();
+        musicControl.classList.add("spin");
+        musicIcon.classList.replace("bi-pause-fill", "bi-music-note-beamed");
     }
-    
-    // Fungsi untuk countdown timer
-    function initializeCountdown() {
-        const weddingDate = new Date('December 15, 2025 08:00:00').getTime();
-        
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
-            
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            animateCountdownNumber('days', days.toString().padStart(2, '0'));
-            animateCountdownNumber('hours', hours.toString().padStart(2, '0'));
-            animateCountdownNumber('minutes', minutes.toString().padStart(2, '0'));
-            animateCountdownNumber('seconds', seconds.toString().padStart(2, '0'));
-            
-            if (distance < 0) {
-                clearInterval(countdownTimer);
-                document.querySelector('.countdown-timer').innerHTML = '<div class="countdown-complete">🎉 The Wedding Day Has Arrived! 🎉</div>';
-            }
-        }
-        
-        function animateCountdownNumber(elementId, newValue) {
-            const element = document.getElementById(elementId);
-            if (element.textContent !== newValue) {
-                gsap.to(element, {
-                    scale: 1.2,
-                    duration: 0.3,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: 'power2.out',
-                    onComplete: () => {
-                        element.textContent = newValue;
-                    }
-                });
-            }
-        }
-        
-        updateCountdown();
-        const countdownTimer = setInterval(updateCountdown, 1000);
+    isPlaying = !isPlaying;
+}
+
+// 6. Tab Mempelai
+function switchMempelai(name) {
+    const tabs = document.querySelectorAll('.avatar-btn'); 
+    const contents = document.querySelectorAll('.mempelai-content');
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+    if (name === 'dyah') {
+        tabs[0].classList.add('active');
+        document.getElementById('content-dyah').classList.add('active');
+    } else {
+        tabs[1].classList.add('active');
+        document.getElementById('content-aji').classList.add('active');
     }
-    
-    // Fungsi untuk gallery carousel
-    function initializeCarousel() {
-        const track = document.querySelector('.carousel-track');
-        const slides = Array.from(document.querySelectorAll('.carousel-slide'));
-        const dots = Array.from(document.querySelectorAll('.dot'));
-        const prevBtn = document.querySelector('.carousel-prev');
-        const nextBtn = document.querySelector('.carousel-next');
-        
-        let currentSlide = 0;
-        
-        // Set active slide
-        function setActiveSlide(index) {
-            // Remove active class from all slides and dots
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            // Add active class to current slide and dot
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
-            
-            // Update current slide
-            currentSlide = index;
-        }
-        
-        // Next slide
-        function nextSlide() {
-            let nextIndex = currentSlide + 1;
-            if (nextIndex >= slides.length) {
-                nextIndex = 0;
-            }
-            setActiveSlide(nextIndex);
-        }
-        
-        // Previous slide
-        function prevSlide() {
-            let prevIndex = currentSlide - 1;
-            if (prevIndex < 0) {
-                prevIndex = slides.length - 1;
-            }
-            setActiveSlide(prevIndex);
-        }
-        
-        // Event listeners
-        nextBtn.addEventListener('click', nextSlide);
-        prevBtn.addEventListener('click', prevSlide);
-        
-        // Dot navigation
-        dots.forEach(dot => {
-            dot.addEventListener('click', function() {
-                const slideIndex = parseInt(this.getAttribute('data-slide'));
-                setActiveSlide(slideIndex);
-            });
-        });
-        
-        // Auto slide every 5 seconds
-        setInterval(nextSlide, 5000);
-        
-        // Swipe support for mobile
-        let startX = 0;
-        let endX = 0;
-        
-        track.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-        });
-        
-        track.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            handleSwipe();
-        });
-        
-        function handleSwipe() {
-            const diff = startX - endX;
-            if (Math.abs(diff) > 50) { // Minimum swipe distance
-                if (diff > 0) {
-                    nextSlide();
-                } else {
-                    prevSlide();
-                }
-            }
-        }
+}
+
+// 7. Countdown
+const weddingDate = new Date("Dec 15, 2025 08:00:00").getTime();
+const countdownInterval = setInterval(function () {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("days").innerText = days;
+    document.getElementById("hours").innerText = hours;
+    document.getElementById("minutes").innerText = minutes;
+    document.getElementById("seconds").innerText = seconds;
+    if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.querySelector(".countdown-box").innerHTML = "<p style='color:#d4af37;'>Acara Telah Selesai</p>";
     }
-    
-    // Fungsi untuk add to calendar
-    calendarBtn.addEventListener('click', function() {
-        const weddingDate = '20251215T080000';
-        const weddingEndDate = '20251215T140000';
-        const title = 'Pernikahan Dyah & Aji';
-        const description = 'Pernikahan Dyah & Aji - Akad Nikah dan Resepsi';
-        const location = 'Bulu, Pondoksari, Nguntoronadi, Wonogiri';
-        
-        // Create .ics file content
-        const icsContent = [
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'BEGIN:VEVENT',
-            `DTSTART:${weddingDate}`,
-            `DTEND:${weddingEndDate}`,
-            `SUMMARY:${title}`,
-            `DESCRIPTION:${description}`,
-            `LOCATION:${location}`,
-            'END:VEVENT',
-            'END:VCALENDAR'
-        ].join('\n');
-        
-        // Create and download .ics file
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'Pernikahan-Dyah-Aji.ics';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Show success message
-        const originalText = this.innerHTML;
-        this.innerHTML = '<i class="fas fa-check"></i> Tersimpan!';
-        this.style.background = '#28a745';
-        
-        setTimeout(() => {
-            this.innerHTML = originalText;
-            this.style.background = '';
-        }, 2000);
-    });
-    
-    // Fungsi untuk memutar musik
-    function playMusic() {
-        weddingMusic.volume = 0.3;
-        weddingMusic.play().then(() => {
-            isMusicPlaying = true;
-            musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-        }).catch(error => {
-            console.log('Autoplay prevented:', error);
-        });
-    }
-    
-    // Event listener untuk toggle musik
-    musicToggle.addEventListener('click', function() {
-        if (isMusicPlaying) {
-            weddingMusic.pause();
-            isMusicPlaying = false;
-            this.innerHTML = '<i class="fas fa-music"></i>';
-        } else {
-            weddingMusic.play();
-            isMusicPlaying = true;
-            this.innerHTML = '<i class="fas fa-pause"></i>';
-        }
-    });
-    
-    // Fungsi untuk copy nomor rekening
-    document.querySelectorAll('.copy-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const accountNumber = this.getAttribute('data-account');
-            navigator.clipboard.writeText(accountNumber).then(() => {
-                const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
-                this.style.background = '#28a745';
-                
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                    this.style.background = '';
-                }, 2000);
-            });
-        });
-    });
-    
-    // Handle form submission
-    document.querySelector('.rsvp-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const submitBtn = this.querySelector('.submit-btn');
-        gsap.to(submitBtn, {
-            duration: 0.3,
-            scale: 0.95,
-            yoyo: true,
-            repeat: 1,
-            onComplete: function() {
-                const successMsg = document.createElement('div');
-                successMsg.className = 'success-message';
-                successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Terima kasih! Ucapan Anda telah terkirim.';
-                
-                document.body.appendChild(successMsg);
-                
-                setTimeout(() => {
-                    successMsg.remove();
-                }, 3000);
-                
-                document.querySelector('.rsvp-form').reset();
-            }
-        });
-    });
-    
-    console.log('🎉 Wedding Website Initialized!');
+}, 1000);
+
+// 8. Copy Text
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(
+        () => { showToast("Berhasil Disalin!"); },
+        () => { alert("Gagal salin: " + text); }
+    );
+}
+function showToast(msg) {
+    const toast = document.getElementById("copy-toast");
+    toast.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${msg}`;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+}
+
+/* ============================================
+   GLOBAL RAIN PARTICLE SYSTEM (VERSI SOFT / GHOST)
+   ============================================ */
+const canvas = document.getElementById("gold-particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray;
+let isRainingActive = true;
+
+// [UPDATE] PALET WARNA TRANSPARAN (RGBA)
+// Angka terakhir (0.4) adalah tingkat transparansi. Semakin kecil = semakin pudar.
+const dustPalette = [
+    'rgba(212, 175, 55, 0.5)',   // Emas Tua (50% Transparan)
+    'rgba(243, 229, 171, 0.4)',  // Emas Muda (40% Transparan)
+    'rgba(255, 255, 255, 0.2)'   // Putih (20% Transparan - Sangat Tipis)
+];
+
+window.addEventListener('resize', function(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 });
+
+function stopRain() {
+    isRainingActive = false; 
+}
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height; 
+        
+        // [UPDATE] UKURAN DIPERKECIL (0.5px sampai 2.5px)
+        this.size = Math.random() * 2 + 0.5; 
+        
+        this.color = dustPalette[Math.floor(Math.random() * dustPalette.length)];
+        this.speedY = Math.random() * 1.5 + 0.5; 
+        this.speedX = Math.random() * 0.5 - 0.25; 
+    }
+
+    update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        
+        if (this.y > canvas.height) {
+            if (isRainingActive) {
+                this.y = 0 - this.size; 
+                this.x = Math.random() * canvas.width;
+                this.speedY = Math.random() * 1.5 + 0.5;
+            }
+        }
+    }
+
+    draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function initParticles() {
+    isRainingActive = true;
+    particlesArray = [];
+    // [UPDATE] JUMLAH DIKURANGI SEDIKIT AGAR TIDAK SUMPEK
+    for (let i = 0; i < 100; i++) { 
+        particlesArray.push(new Particle());
+    }
+    animateParticles();
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+    }
+    requestAnimationFrame(animateParticles);
+}
+
+/* ============================================
+   3D TILT (HERO ONLY)
+   ============================================ */
+const tiltBox = document.querySelector('.tilt-box');
+const tiltCard = document.getElementById('tilt-card');
+const tiltGlare = document.getElementById('tilt-glare');
+
+if (window.matchMedia("(min-width: 768px)").matches && tiltBox) {
+    tiltBox.addEventListener('mousemove', (e) => {
+        const rect = tiltBox.getBoundingClientRect();
+        const x = e.clientX - rect.left; 
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -15; 
+        const rotateY = ((x - centerX) / centerX) * 15;
+
+        tiltCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        
+        const glareX = ((x / rect.width) * 100);
+        const glareY = ((y / rect.height) * 100);
+        tiltGlare.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.3), rgba(255,255,255,0))`;
+        tiltGlare.style.opacity = '1';
+    });
+    tiltBox.addEventListener('mouseleave', () => {
+        tiltCard.style.transform = `rotateX(0) rotateY(0)`;
+        tiltGlare.style.opacity = '0';
+    });
+}
+
+/* ============================================
+   FIREBASE UCAPAN LOGIC
+   ============================================ */
+function kirimUcapan(e) {
+    e.preventDefault();
+    const nama = document.getElementById("nama").value;
+    const kehadiran = document.getElementById("kehadiran").value;
+    const pesan = document.getElementById("pesan").value;
+    const btn = document.querySelector(".btn-kirim");
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Mengirim...';
+
+    db.collection("ucapan").add({
+        nama: nama, kehadiran: kehadiran, pesan: pesan,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        showToast("Terima Kasih, Ucapan Terkirim!");
+        document.getElementById("rsvpForm").reset();
+        getGuestName();
+    }).catch(error => { console.error("Error:", error); alert("Gagal mengirim ucapan."); })
+    .finally(() => { btn.disabled = false; btn.innerHTML = originalText; });
+}
+
+function loadUcapan() {
+    const list = document.getElementById("comments-list");
+    if(!list) return;
+    db.collection("ucapan").orderBy("timestamp", "desc").limit(20).onSnapshot(snapshot => {
+        let html = "";
+        if (snapshot.empty) { html = '<div class="loading-text">Belum ada ucapan. Jadilah yang pertama!</div>'; } 
+        else {
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                let timeString = "";
+                if (data.timestamp) {
+                    const date = data.timestamp.toDate();
+                    timeString = date.toLocaleDateString("id-ID") + " " + date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+                }
+                let statusClass = data.kehadiran.includes("Tidak") ? "Tidak" : "Hadir";
+                html += `<div class="comment-item">
+                    <div class="comment-header"><span class="c-name">${escapeHtml(data.nama)}</span><span class="c-status ${statusClass}">${data.kehadiran}</span></div>
+                    <p class="c-message">${escapeHtml(data.pesan)}</p><span class="c-time">${timeString}</span>
+                </div>`;
+            });
+        }
+        list.innerHTML = html;
+    });
+}
+function escapeHtml(text) {
+    if (!text) return "";
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}

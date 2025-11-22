@@ -1,411 +1,314 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wedding Of DYAH & AJI</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <!-- Cover Section -->
-    <section class="cover" id="cover">
-        <div class="parallax-background">
-            <div class="parallax-layer layer-1"></div>
-            <div class="parallax-layer layer-2"></div>
-            <div class="parallax-layer layer-3"></div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Wedding of Dyah & Aji</title>
+        
+        <meta property="og:title" content="Undangan Pernikahan Dyah & Aji" />
+        <meta property="og:description" content="Silakan buka undangan pernikahan Dyah & Aji. Klik untuk melihat detail acara." />
+        <meta property="og:image" content="assets/cover.jpg" />
+        <meta property="og:type" content="website" />
+
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet" />
+
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="global-bg">
+            <div class="bg-slide slide-1"></div>
+            <div class="bg-slide slide-2"></div>
+            <div class="bg-dark-overlay"></div>
+        </div>
+
+        <div id="cover">
+            <div class="cover-top">
+                <h3 class="sub-title animate-up delay-1">THE WEDDING OF</h3>
+                <h1 class="wedding-names animate-up delay-2">Dyah & Aji</h1>
+                <p class="wedding-date-cover animate-up delay-3">Senin, 15 Desember 2025</p>
+            </div>
+
+            <div class="cover-bottom">
+                <div class="animate-up delay-4">
+                    <p class="guest-salutation">
+                        Kepada Yth. <br />
+                        <strong id="guest-name-cover">Tamu Undangan</strong>
+                    </p>
+                    <p class="invitation-text">
+                        Tanpa mengurangi rasa hormat, <br />
+                        kami mengundang Anda untuk menghadiri <br />
+                        acara pernikahan kami.
+                    </p>
+                </div>
+                <button class="btn-open animate-up delay-5" onclick="bukaUndangan()">
+                    <i class="bi bi-envelope-open-heart"></i> BUKA UNDANGAN
+                </button>
+            </div>
+        </div>
+
+        <div id="main-content">
+            
+            <section id="home" class="section-hero">
+                <div class="hero-bg-fixed"></div>
+                
+                <canvas id="gold-particles"></canvas>
+
+                <h2 class="wedding-title" data-aos="fade-down">We Are Getting Married</h2>
+                <p class="wedding-date" data-aos="fade-in" data-aos-delay="300">Senin, 15 Desember 2025</p>
+                
+                <div class="tilt-box" data-aos="zoom-in" data-aos-duration="1500">
+                    <div class="tilt-inner" id="tilt-card">
+                        <div class="tilt-glare" id="tilt-glare"></div>
+                        <img src="assets/hero.jpg" class="tilt-img" alt="Couple">
+                    </div>
+                </div>
+                
+                <div class="countdown-box" data-aos="fade-up" data-aos-delay="800">
+                    <div class="timer-item"><span class="timer-num" id="days">00</span><span class="timer-label">Hari</span></div>
+                    <div class="timer-item"><span class="timer-num" id="hours">00</span><span class="timer-label">Jam</span></div>
+                    <div class="timer-item"><span class="timer-num" id="minutes">00</span><span class="timer-label">Menit</span></div>
+                    <div class="timer-item"><span class="timer-num" id="seconds">00</span><span class="timer-label">Detik</span></div>
+                </div>
+            </section>
+
+            <section id="verse" class="section-verse" data-aos="fade-up">
+                <div class="glass-box-verse">
+                    <div class="verse-decoration"><i class="bi bi-stars"></i></div>
+                    <p class="verse-text">
+                        "Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya
+                        untukmu pasangan hidup dari jenismu sendiri supaya kamu
+                        dapat ketenangan hati dan dijadikannya kasih sayang di
+                        antara kamu."
+                    </p>
+                    <span class="verse-source">(QS. Ar-Rum Ayat 21)</span>
+                </div>
+            </section>
+
+            <section id="mempelai" class="section-mempelai-tabs">
+                <h2 class="section-title-gold" data-aos="fade-down">Bride & Groom</h2>
+                <div class="tab-navigation" data-aos="fade-up">
+                    <div class="avatar-btn active" onclick="switchMempelai('dyah')">
+                        <div class="avatar-img"><img src="assets/bride.jpg" alt="Dyah" /></div>
+                        <span class="avatar-label">Dyah</span>
+                    </div>
+                    <div class="avatar-connector"></div>
+                    <div class="avatar-btn" onclick="switchMempelai('aji')">
+                        <div class="avatar-img"><img src="assets/groom.jpg" alt="Aji" /></div>
+                        <span class="avatar-label">Aji</span>
+                    </div>
+                </div>
+
+                <div class="glass-card-mempelai" data-aos="zoom-in">
+                    <div id="content-dyah" class="mempelai-content active">
+                        <div class="photo-frame-gold"><img src="assets/bride.jpg" alt="Dyah" /></div>
+                        <div class="info-text">
+                            <span class="badge-role">The Bride</span>
+                            <h2 class="name-display">Setyo Dyah Pramesti</h2>
+                            <p class="parents-label">Putri dari</p>
+                            <p class="parents-name">Bpk. Narto (Sijeh) <br />& Ibu Suwarni (Almh)</p>
+                            <p class="mempelai-address"><i class="bi bi-geo-alt"></i> Bulu, Pondoksari, Nguntoronadi, Wonogiri</p>
+                            <a href="https://www.instagram.com/dyah.styo/" target="_blank" class="btn-ig"><i class="bi bi-instagram"></i> @dyah.styo</a>
+                        </div>
+                    </div>
+                    <div id="content-aji" class="mempelai-content">
+                        <div class="photo-frame-gold"><img src="assets/groom.jpg" alt="Aji" /></div>
+                        <div class="info-text">
+                            <span class="badge-role">The Groom</span>
+                            <h2 class="name-display">Aji Santoso</h2>
+                            <p class="parents-label">Putra dari</p>
+                            <p class="parents-name">Bpk. Sugiyat <br />& Ibu Gini</p>
+                            <p class="mempelai-address"><i class="bi bi-geo-alt"></i> Jatiroto, Semin, Nguntoronadi, Wonogiri</p>
+                            <a href="https://www.instagram.com/aji_rt/" target="_blank" class="btn-ig"><i class="bi bi-instagram"></i> @aji_rt</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="events" class="section-events">
+                <div class="section-header" data-aos="fade-down">
+                    <h2 class="section-title-gold">Wedding Events</h2>
+                    <p class="section-subtitle">Acara pernikahan kami akan dilaksanakan pada:</p>
+                </div>
+                <div class="event-grid">
+                    <div class="event-card" data-aos="flip-left" data-aos-delay="100">
+                        <div class="card-ornament-top"><i class="bi bi-flower1"></i></div>
+                        <h3 class="event-title">AKAD NIKAH</h3>
+                        <div class="event-date"><i class="bi bi-calendar-heart"></i><span>Senin, 15 Desember 2025</span></div>
+                        <div class="event-time"><i class="bi bi-alarm"></i><span>08.00 WIB - Selesai</span></div>
+                        <div class="event-divider"></div>
+                        <div class="event-location">
+                            <i class="bi bi-geo-alt-fill"></i><strong>Kediaman Mempelai Wanita</strong>
+                            <p>Bulu, Pondoksari, Nguntoronadi, Wonogiri</p>
+                        </div>
+                    </div>
+                    <div class="event-card" data-aos="flip-right" data-aos-delay="300">
+                        <div class="card-ornament-top"><i class="bi bi-cup-hot"></i></div>
+                        <h3 class="event-title">RESEPSI</h3>
+                        <div class="event-date"><i class="bi bi-calendar-check"></i><span>Senin, 15 Desember 2025</span></div>
+                        <div class="event-time"><i class="bi bi-clock-history"></i><span>11.00 WIB - Selesai</span></div>
+                        <div class="event-divider"></div>
+                        <div class="event-location">
+                            <i class="bi bi-geo-alt-fill"></i><strong>Kediaman Mempelai Wanita</strong>
+                            <p>Bulu, Pondoksari, Nguntoronadi, Wonogiri</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="location" class="section-location">
+                <div class="section-header" data-aos="fade-down">
+                    <h2 class="section-title-gold">Lokasi Acara</h2>
+                </div>
+                <div class="glass-map-card" data-aos="zoom-in-up">
+                    <div class="floating-pin"><i class="bi bi-geo-alt-fill"></i></div>
+                    <div class="map-frame">
+                        <iframe src="https://maps.google.com/maps?q=Bulu,+Pondoksari,+Nguntoronadi,+Wonogiri&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="450" style="border: 0" allowfullscreen="" loading="lazy" class="google-map"></iframe>
+                    </div>
+                    <div class="map-actions">
+                        <a href="https://goo.gl/maps/xxx" target="_blank" class="btn-action-gold primary"><i class="bi bi-map-fill"></i> Buka Google Maps</a>
+                        <button onclick="copyText('Bulu, Pondoksari, Nguntoronadi, Wonogiri')" class="btn-action-gold secondary"><i class="bi bi-files"></i> Salin Alamat</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gift" class="section-gift">
+                <div class="section-header" data-aos="fade-down">
+                    <h2 class="section-title-gold">Wedding Gift</h2>
+                    <p class="section-subtitle">Bagi bapak/ibu/saudara/i yang ingin mengirimkan hadiah pernikahan dapat melalui nomer rekening di bawah ini:</p>
+                    <div class="gift-container">
+                        <div class="atm-card card-bri" data-aos="flip-up" data-aos-delay="100">
+                            <div class="card-shine"></div>
+                            <div class="card-top">
+                                <div class="chip-img">
+                                    <div class="chip-line"></div><div class="chip-line"></div><div class="chip-line"></div><div class="chip-line"></div>
+                                </div>
+                                <i class="bi bi-wifi card-contactless"></i>
+                                <img src="assets/bri.png" alt="BRI" class="bank-logo" />
+                            </div>
+                            <div class="card-number-group"><span class="card-number">1188 0100 8825 508</span></div>
+                            <div class="card-bottom">
+                                <div class="card-holder"><span class="holder-label">CARD HOLDER</span><span class="holder-name">AJI SANTOSO</span></div>
+                                <button class="btn-copy-text" onclick="copyText('118801008825508')">Salin <i class="bi bi-files"></i></button>
+                            </div>
+                        </div>
+                        <div class="atm-card card-dana" data-aos="flip-up" data-aos-delay="300">
+                            <div class="card-shine"></div>
+                            <div class="card-top">
+                                <div class="chip-img">
+                                    <div class="chip-line"></div><div class="chip-line"></div><div class="chip-line"></div><div class="chip-line"></div>
+                                </div>
+                                <i class="bi bi-wifi card-contactless"></i>
+                                <img src="assets/dana.png" alt="DANA" class="bank-logo" />
+                            </div>
+                            <div class="card-number-group"><span class="card-number">0813 2983 4033</span></div>
+                            <div class="card-bottom">
+                                <div class="card-holder"><span class="holder-label">CARD HOLDER</span><span class="holder-name">SETYO DYAH PRAMESTI</span></div>
+                                <button class="btn-copy-text" onclick="copyText('081329834033')">Salin <i class="bi bi-files"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="rsvp" class="section-rsvp">
+                <div class="section-header" data-aos="fade-down">
+                    <h2 class="section-title-gold">Best Wishes</h2>
+                    <p class="section-subtitle">Sampaikan doa dan ucapan terbaik Anda</p>
+                </div>
+                <div class="rsvp-container">
+                    <div class="glass-form-card" data-aos="fade-right">
+                        <form id="rsvpForm" onsubmit="kirimUcapan(event)">
+                            <div class="form-group">
+                                <label><i class="bi bi-person-fill"></i> Nama Tamu</label>
+                                <input type="text" id="nama" placeholder="Nama Anda" required />
+                            </div>
+                            <div class="form-group">
+                                <label><i class="bi bi-check-circle-fill"></i> Konfirmasi</label>
+                                <select id="kehadiran" required>
+                                    <option value="Hadir">Hadir</option>
+                                    <option value="Tidak Hadir">Tidak Hadir</option>
+                                    <option value="Masih Ragu">Masih Ragu</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="bi bi-chat-heart-fill"></i> Ucapan & Doa</label>
+                                <textarea id="pesan" rows="4" placeholder="Tulis ucapan selamat..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-kirim"><i class="bi bi-send-fill"></i> Kirim Ucapan</button>
+                        </form>
+                    </div>
+                    <div class="glass-comments-card" data-aos="fade-left">
+                        <h3 class="comment-title">Ucapan Terbaru</h3>
+                        <div id="comments-list" class="comments-scroll">
+                            <div class="loading-text">Memuat ucapan...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer-section">
+                <div class="glass-footer-content" data-aos="fade-up">
+                    <p class="closing-text">
+                        Merupakan suatu kebahagiaan dan kehormatan bagi kami,
+                        apabila Bapak/Ibu/Saudara/i, berkenan hadir dan
+                        memberikan do'a restu kepada kami.
+                    </p>
+                    <div class="closing-signature">
+                        <span class="small-text">KAMI YANG BERBAHAGIA</span>
+                        <h2 class="couple-signature">Dyah & Aji</h2>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>© 2025 Dyah & Aji Wedding. All Rights Reserved.</p>
+                </div>
+            </footer>
+        </div>
+
+        <nav class="bottom-navbar" id="navbar">
+            <a href="#home" class="nav-item active"><i class="bi bi-house-heart-fill"></i><span>Home</span></a>
+            <a href="#mempelai" class="nav-item"><i class="bi bi-people-fill"></i><span>Mempelai</span></a>
+            <a href="#events" class="nav-item"><i class="bi bi-calendar-event-fill"></i><span>Acara</span></a>
+            <a href="#rsvp" class="nav-item"><i class="bi bi-chat-heart-fill"></i><span>Ucapan</span></a>
+        </nav>
+
+        <div id="music-control" onclick="toggleMusic()">
+            <i class="bi bi-music-note-beamed" id="music-icon"></i>
+        </div>
+        <audio id="bg-music" loop>
+            <source src="assets/music.mp3" type="audio/mp3" />
+        </audio>
+
+        <div id="copy-toast" class="toast-notification">
+            <i class="bi bi-check-circle-fill"></i> Berhasil Disalin!
         </div>
         
-        <div class="cover-content">
-            <div class="cover-text">
-                <h2 class="cover-subtitle">THE WEDDING OF</h2>
-                <h1 class="cover-title">DYAH & AJI</h1>
-                <p class="cover-date">SENIN, 15 DESEMBER 2025</p>
-            </div>
-            
-            <div class="cover-invitation">
-                <p>Kepada Yth:<br>Bpk/Ibu/Saudara/i</p>
-                <h3 class="guest-name">Nama Tamu</h3>
-                <p>Di Tempat</p>
-            </div>
+        <canvas id="explosion-canvas"></canvas>
 
-            <button class="open-invitation-btn" id="openBtn">
-                <i class="fas fa-envelope-open"></i>
-                Buka Undangan
-            </button>
-        </div>
-    </section>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
-    <!-- Main Content -->
-    <main class="main-content" id="mainContent">
-        <!-- Hero Section -->
-        <section class="hero" id="hero">
-            <div class="hero-background">
-                <div class="hero-bg-image"></div>
-                <div class="hero-overlay"></div>
-            </div>
-            
-            <div class="hero-content">
-                <div class="hero-frame">
-                    <div class="hero-text">
-                        <span class="hero-subtitle">THE WEDDING OF</span>
-                        
-                        <div class="hero-names-container">
-                            <div class="name-wrapper">
-                                <span class="hero-name bride-name">Dyah</span>
-                            </div>
-                            
-                            <span class="hero-ampersand">&</span>
-                            
-                            <div class="name-wrapper">
-                                <span class="hero-name groom-name">Aji</span>
-                            </div>
-                        </div>
-                        
-                        <div class="hero-date-container">
-                            <span class="hero-date">SENIN, 15 DESEMBER 2025</span>
-                            <div class="date-decoration"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-        <!-- We Found Love Section - DIKECILKAN -->
-        <section class="found-love" id="foundLove">
-            <div class="container">
-                <div class="found-love-content">
-                    <h2 class="found-love-title">WE FOUND LOVE</h2>
-                    <div class="verse-container">
-                        <div class="verse-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <blockquote class="verse-text">
-                            " Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu dapat ketenangan hati dan dijadikannya kasih sayang di antara kamu. Sesungguhnya yang demikian menjadi tanda-tanda kebesaran-Nya bagi orang-orang yang berpikir. "
-                        </blockquote>
-                        <p class="verse-source">QS. Ar-Rum Ayat 21</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <script>
+            const firebaseConfig = {
+                apiKey: "AIzaSyDqFTzp0PNQORrEShOofAHawejevLwbyQg",
+                authDomain: "undangan-ojlo.firebaseapp.com",
+                projectId: "undangan-ojlo",
+                storageBucket: "undangan-ojlo.firebasestorage.app",
+                messagingSenderId: "293262307556",
+                appId: "1:293262307556:web:576e1b0d3b17e9dbf3bcf1",
+                measurementId: "G-B6BRP95W3S"
+            };
+            if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+            const db = firebase.firestore();
+        </script>
 
-        <!-- Couple Section -->
-        <section class="couple" id="couple">
-            <div class="container">
-                <h2 class="section-title">Bride & Groom</h2>
-                <p class="section-subtitle">Dengan memohon rahmat dan ridho Allah Swt. kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan putra-putri kami:</p>
-                
-                <div class="couple-profiles">
-                    <div class="profile bride-profile">
-                        <div class="profile-image">
-                            <img src="assets/bride.jpg" alt="Setyo Dyah Pramesti">
-                        </div>
-                        <h3>Setyo Dyah Pramesti</h3>
-                        <p>Putri dari</p>
-                        <p>Bpk. Narto (Sijeh) & Ibu Suwarni (Almh)</p>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                            @dyah_insta
-                        </a>
-                    </div>
-
-                    <div class="profile groom-profile">
-                        <div class="profile-image">
-                            <img src="assets/groom.jpg" alt="Aji Santoso">
-                        </div>
-                        <h3>Aji Santoso</h3>
-                        <p>Putra dari</p>
-                        <p>Bpk. Sugiyat & Ibu Gini</p>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                            @aji_insta
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Countdown Section -->
-        <section class="countdown-section" id="countdown">
-            <div class="container">
-                <div class="countdown-content">
-                    <h2 class="countdown-title">Save The Date</h2>
-                    
-                    <div class="countdown-timer">
-                        <div class="countdown-item">
-                            <div class="countdown-number" id="days">00</div>
-                            <div class="countdown-label">Hari</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="countdown-number" id="hours">00</div>
-                            <div class="countdown-label">Jam</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="countdown-number" id="minutes">00</div>
-                            <div class="countdown-label">Menit</div>
-                        </div>
-                        <div class="countdown-item">
-                            <div class="countdown-number" id="seconds">00</div>
-                            <div class="countdown-label">Detik</div>
-                        </div>
-                    </div>
-                    
-                    <div class="wedding-date">
-                        <i class="fas fa-heart"></i>
-                        Senin, 15 Desember 2025
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    
-                    <button class="calendar-btn" id="addToCalendar">
-                        <i class="far fa-calendar-plus"></i>
-                        Simpan di Kalender
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Events Section -->
-        <section class="events" id="events">
-            <div class="container">
-                <h2 class="section-title">Wedding Events</h2>
-                <p class="section-subtitle">Acara pernikahan kami akan dilaksanakan pada:</p>
-                
-                <div class="event-grid">
-                    <div class="event-card">
-                        <div class="event-icon">
-                            <i class="fas fa-ring"></i>
-                        </div>
-                        <h3>AKAD NIKAH</h3>
-                        <div class="event-details">
-                            <p><i class="far fa-calendar"></i> Senin, 15 Desember 2025</p>
-                            <p><i class="far fa-clock"></i> 08.00 WIB - Selesai</p>
-                            <p><i class="fas fa-map-marker-alt"></i> Kediaman Mempelai Wanita</p>
-                            <p class="event-address">Bulu, Pondoksari, Nguntoronadi, Wonogiri</p>
-                        </div>
-                        <a href="#" class="map-btn">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Open Maps
-                        </a>
-                    </div>
-
-                    <div class="event-card">
-                        <div class="event-icon">
-                            <i class="fas fa-glass-cheers"></i>
-                        </div>
-                        <h3>RESEPSI</h3>
-                        <div class="event-details">
-                            <p><i class="far fa-calendar"></i> Senin, 15 Desember 2025</p>
-                            <p><i class="far fa-clock"></i> 11.00 WIB - Selesai</p>
-                            <p><i class="fas fa-map-marker-alt"></i> Kediaman Mempelai Wanita</p>
-                            <p class="event-address">Bulu, Pondoksari, Nguntoronadi, Wonogiri</p>
-                        </div>
-                        <a href="#" class="map-btn">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Open Maps
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Gallery Section -->
-        <section class="gallery" id="gallery">
-            <div class="container">
-                <h2 class="section-title">Our Gallery</h2>
-                <p class="section-subtitle">Kenangan indah perjalanan cinta kami</p>
-                
-                <div class="gallery-carousel">
-                    <div class="carousel-container">
-                        <div class="carousel-track">
-                            <!-- Slide 1 -->
-                            <div class="carousel-slide active">
-                                <img src="assets/gallery1.jpg" alt="Moment 1" class="carousel-image">
-                                <div class="carousel-caption">
-                                    <h3>First Meet</h3>
-                                    <p>Pertemuan pertama yang mengubah segalanya</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Slide 2 -->
-                            <div class="carousel-slide">
-                                <img src="assets/gallery2.jpg" alt="Moment 2" class="carousel-image">
-                                <div class="carousel-caption">
-                                    <h3>Adventure Together</h3>
-                                    <p>Petualangan kami menjelajahi dunia</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Slide 3 -->
-                            <div class="carousel-slide">
-                                <img src="assets/gallery3.jpg" alt="Moment 3" class="carousel-image">
-                                <div class="carousel-caption">
-                                    <h3>Special Moments</h3>
-                                    <p>Momen berharga yang tak terlupakan</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Slide 4 -->
-                            <div class="carousel-slide">
-                                <img src="assets/gallery4.jpg" alt="Moment 4" class="carousel-image">
-                                <div class="carousel-caption">
-                                    <h3>Sunset Date</h3>
-                                    <p>Bersama menikmati keindahan senja</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Slide 5 -->
-                            <div class="carousel-slide">
-                                <img src="assets/gallery5.jpg" alt="Moment 5" class="carousel-image">
-                                <div class="carousel-caption">
-                                    <h3>Laughter</h3>
-                                    <p>Tawa dan kebahagiaan bersama</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Slide 6 -->
-                            <div class="carousel-slide">
-                                <img src="assets/gallery6.jpg" alt="Moment 6" class="carousel-image">
-                                <div class="carousel-caption">
-                                    <h3>Engagement</h3>
-                                    <p>Momen spesial lamaran kami</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Navigation Buttons -->
-                        <button class="carousel-btn carousel-prev">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="carousel-btn carousel-next">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                        
-                        <!-- Dots Indicator -->
-                        <div class="carousel-dots">
-                            <span class="dot active" data-slide="0"></span>
-                            <span class="dot" data-slide="1"></span>
-                            <span class="dot" data-slide="2"></span>
-                            <span class="dot" data-slide="3"></span>
-                            <span class="dot" data-slide="4"></span>
-                            <span class="dot" data-slide="5"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Gift Section -->
-        <section class="gift" id="gift">
-            <div class="container">
-                <h2 class="section-title">Wedding Gift</h2>
-                <p class="section-subtitle">Bagi bapak/ibu/saudara/i yang ingin mengirimkan hadiah pernikahan dapat melalui nomer rekening di bawah ini</p>
-                
-                <div class="bank-accounts">
-                    <div class="bank-card">
-                        <div class="bank-icon">
-                            <i class="fas fa-university"></i>
-                        </div>
-                        <div class="bank-logo">
-                            <img src="assets/bca.png" alt="BCA">
-                        </div>
-                        <div class="bank-details">
-                            <p class="account-number">1234567890</p>
-                            <p class="account-name">Aji Santoso</p>
-                        </div>
-                        <button class="copy-btn" data-account="1234567890">
-                            <i class="far fa-copy"></i>
-                            Salin
-                        </button>
-                    </div>
-                    
-                    <div class="bank-card">
-                        <div class="bank-icon">
-                            <i class="fas fa-university"></i>
-                        </div>
-                        <div class="bank-logo">
-                            <img src="assets/mandiri.png" alt="Mandiri">
-                        </div>
-                        <div class="bank-details">
-                            <p class="account-number">0987654321</p>
-                            <p class="account-name">Setyo Dyah Pramesti</p>
-                        </div>
-                        <button class="copy-btn" data-account="0987654321">
-                            <i class="far fa-copy"></i>
-                            Salin
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- RSVP Section -->
-        <section class="rsvp" id="rsvp">
-            <div class="container">
-                <h2 class="section-title">Best Wishes</h2>
-                <p class="section-subtitle">Sampaikan doa dan ucapan terbaik Anda</p>
-                
-                <form class="rsvp-form">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Nama Anda" value="Nama Tamu" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <select name="attendance" required>
-                            <option value="" disabled selected>Konfirmasi Kehadiran</option>
-                            <option value="present">Hadir</option>
-                            <option value="notpresent">Tidak Hadir</option>
-                            <option value="notsure">Masih Ragu</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <textarea name="message" placeholder="Tulis ucapan" rows="4" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i>
-                        Kirim
-                    </button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-hearts">
-                        <i class="fas fa-heart"></i>
-                        <i class="fas fa-heart"></i>
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <p>Merupakan suatu kebahagiaan dan kehormatan bagi kami, apabila Bapak/Ibu/Saudara/i, berkenan hadir dan memberikan do'a restu kepada kami.</p>
-                    <h3>KAMI YANG BERBAHAGIA</h3>
-                    <h2>Dyah & Aji</h2>
-                    <div class="footer-decoration">
-                        <div class="decoration-line"></div>
-                        <i class="fas fa-heart"></i>
-                        <div class="decoration-line"></div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </main>
-
-    <!-- Music Player -->
-    <div class="music-player" id="musicPlayer">
-        <button class="music-toggle" id="musicToggle">
-            <i class="fas fa-music"></i>
-        </button>
-        <audio id="weddingMusic" loop>
-            <source src="assets/music.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="script.js"></script>
-</body>
+        <script src="script.js"></script>
+    </body>
 </html>
